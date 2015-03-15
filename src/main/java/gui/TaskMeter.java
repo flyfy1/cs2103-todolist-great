@@ -3,21 +3,10 @@ package gui;
 import gui.autocomplete.AutoComplete;
 import gui.quickadd.QuickAddDialog;
 import gui.reminder.ReminderDialog;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.Map.Entry;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import logic.ControlGUI;
 import logic.DateFormat;
 import logic.filter.Filter;
 import logic.filter.FilterTask;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -54,7 +43,6 @@ import org.eclipse.swt.widgets.ToolTip;
 import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import storage.FileHandler;
 import storage.Priority;
 import storage.Task;
@@ -62,6 +50,12 @@ import storage.TaskList;
 import storage.TaskLists;
 import storage.user.User;
 
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Map.Entry;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 /**
  * TaskMeter Main Graphic User Interface
@@ -119,7 +113,7 @@ public class TaskMeter extends Shell {
      * Create the shell and all respected components
      * 
      * @param display
-     * @param i 
+     * @param property
      */
     public TaskMeter(final Display display, Integer property) {
         super(display, property.intValue());
@@ -174,7 +168,10 @@ public class TaskMeter extends Shell {
         display.timerExec(User.getAutoSaveTime(), autoSave);
 
         // set application logo
-        setLogoImage(display);
+        InputStream is = TaskMeter.class.getResourceAsStream("/taskMeter.gif");
+        ImageData source = new ImageData(is);
+        ImageData mask = source.getTransparencyMask();
+        logo = new Image(display, source, mask);
         setImage(logo);
         // set application tray
         setTray(display);
@@ -191,22 +188,6 @@ public class TaskMeter extends Shell {
         createBottomButtons();
         createStatusBar();
         createContents();
-    }
-    
-    private void setLogoImage(Display display) {
-        try {
-            InputStream stream = TaskMeter.class.getResourceAsStream("taskMeter.gif");
-            ImageData source = new ImageData(stream);
-            ImageData mask = source.getTransparencyMask();
-            logo = new Image(display, source, mask);
-            try {
-                stream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "setLogoImage", e);
-        }
     }
     
     private void openTrayReminder(String title, String msg) {

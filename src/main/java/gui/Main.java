@@ -1,14 +1,12 @@
 package gui;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-
 import storage.logging.Log;
 import storage.user.User;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(TaskMeter.class.getName());
